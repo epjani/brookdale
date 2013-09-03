@@ -14,6 +14,7 @@ body{
 .times{
 	font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
 }
+.clear_on_mobile{float:left;}
 .brookdale_site_wrapper{
 	width: 100%;
 }
@@ -23,7 +24,6 @@ body{
 }
 .brookdale_site_wrapper .header_wrapper .header{
 	max-width: 940px;
-	width: 100%;
 	height: 50px;
 	margin: 0 auto;
 	padding: 20px 0px;
@@ -48,7 +48,6 @@ body{
 .brookdale_site_wrapper .content_wrapper{
 	background: #ffffff;
 	max-width: 900px;
-	width: 100%;
 	margin: 0 auto;
 	height: 100%;
 	border: 1px solid #ededed;
@@ -151,4 +150,20 @@ body{
 	width: 292px;
 	height: 75px;
 	background: url('../images/sponsors.png') no-repeat;
+}
+
+@media (max-width: 940px){
+	.brookdale_site_wrapper .header_wrapper .header{padding:20px;}
+}
+@media (max-width: 936px){
+	.content_wrapper .left_content, .content_wrapper .right_content{float: none;margin: 0 auto;}
+	.clear_on_mobile{float:none;clear: both;}
+}
+@media (max-width: 642px){
+	.left_content .places_wrapper{margin: 0 auto;float: none;width: 300px;}
+}
+@media (max-width: 527px){
+	.brookdale_site_wrapper .header_wrapper .header{text-align: center;height: 88px;}
+	.header_wrapper .header .logo{float: none;}
+	.header_wrapper .header .contact_phone{float: none;border-top: 1px solid #cdcdcd;margin-top: 10px;padding-top: 8px;}
 }

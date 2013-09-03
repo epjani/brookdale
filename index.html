@@ -6,6 +6,22 @@
         <link href="css/reset.css" rel="stylesheet" type="text/css" />
         <link href="css/main.css" rel="stylesheet" type="text/css" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDO0jsf2fYtdoQIZNbU3jyJTaTWUYSYlZw&sensor=false">
+        </script>
+        <script>
+            function initialize()
+            {
+            var mapProp = {
+              center:new google.maps.LatLng(51.508742,-0.120850),
+              zoom:5,
+              mapTypeId:google.maps.MapTypeId.ROADMAP
+              };
+            var map=new google.maps.Map(document.getElementById("googleMap")
+              ,mapProp);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
     </head>
     <body>
         <div class="brookdale_site_wrapper">
@@ -101,6 +117,7 @@
                         </div>                        
                     </div>
                 </div>
+                <div class="clear_on_mobile"></div>
                 <div class="right_content">
                     <!--[if IE]>
                     <link rel="stylesheet" type="text/css" media="all" href="http://www.formstack.com/forms/css/3/ie.css" />
@@ -284,6 +301,7 @@
                     </form>
                     <img src="http://www.formstack.com/forms/count.php?1564593" alt="Form View Counter" width="1" height="1" border="0" />
                     <div class="sponsors"></div>
+                    <div id="googleMap" style="width:290px;height:328px;margin-top:50px;"></div>
                 </div>
                 <div class="clear"></div>
 
