@@ -5,22 +5,261 @@
         <title></title>
         <link href="css/reset.css" rel="stylesheet" type="text/css" />
         <link href="css/main.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDO0jsf2fYtdoQIZNbU3jyJTaTWUYSYlZw&sensor=false">
         </script>
         <script>
-            function initialize()
-            {
-            var mapProp = {
-              center:new google.maps.LatLng(51.508742,-0.120850),
-              zoom:5,
-              mapTypeId:google.maps.MapTypeId.ROADMAP
-              };
-            var map=new google.maps.Map(document.getElementById("googleMap")
-              ,mapProp);
-            }
+        var newzoom;
+        $(function () { //Jquery ONDOMREADY
 
-            google.maps.event.addDomListener(window, 'load', initialize);
+
+
+                function getmap() {
+                    var mymapdata;
+                    mymapdata = "";
+                    var icount = 10;
+                    var pcount = 1;
+                    pcount = Number($(".number").html())
+                    var conceptName = $('#lab09').find(":selected").val();
+                    icount = Number(conceptName * 10)
+
+                    //console.log($(".jcfcalc current-selected"))
+                    var listcount = (pcount * icount) - icount;
+                    var geocoder;
+                    // Map Options  -- https://developers.google.com/maps/documentation/javascript/tutorial#MapOptions
+                    var mapOptions = {
+                        zoom: 8,
+                        center: new google.maps.LatLng(39.36006, -84.30994),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+
+                    // Create Instance of Map//////////////////////////
+                    var gmap = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+
+
+
+                    var mystate = "NC";
+                    var caretype = "";
+                    var rad = "";
+                    // Get Current Location ////////
+                    geocoder = new google.maps.Geocoder();
+                    var address = "charlotte";
+                    geocoder.geocode({ 'address': address },
+                function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        mymapdata = mymapdata;
+                        newcenter = results[0].geometry.location;
+                        mylat = results[0].geometry.location.lat();
+                        mylong = results[0].geometry.location.lng();
+                        //  alert("Geocode2 : long:" + mylong + " lat:" + mylat);
+                        // Got Current Location ////////
+                        // Get JSON Feed
+
+                        try {
+
+                            // $.getJSON('http://www.brookdaleliving.com/apilocator.aspx?plat=35.2270869&plong=-80.84312669999997&rad=100&ctype=&mystate=NC', function (data) {
+                                //$.getJSON('http://localhost:54756/apilocator.aspx?clat=' + mylat + '&clong=' + mylong + '&radius=' + rad + '&caretype=' + caretype, function (data) {
+                                // Loop through and store marker objects
+                                data = [{"item_ALNumber":" ","item_HomePage":"wilora-lake-lodge.aspx","item_Image":"img_50770.jpg","item_MapName":"Wilora Lake Lodge (Charlotte)","item_Marker":"0","item_Phone":"877-713-2789","item_address":"6053 Wilora Lake Road","item_caretype":"<ul class='tags'><li>Independent Living<\/li><\/ul><ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Charlotte","item_distance":5.548053,"item_email":"sales50770@Brookdaleliving.com","item_id":951,"item_lat":"35.209868","item_long":"-80.747044","item_name":"Wilora Lake Lodge","item_state":"NC","item_zip":"28212"},{"item_ALNumber":" ","item_HomePage":"carriage-club-of-charlotte.aspx","item_Image":"img_50610.jpg","item_MapName":"Carriage Club Of Charlotte","item_Marker":"0","item_Phone":"877-916-0015","item_address":"5800 Old Providence Road","item_caretype":"<ul class='tags'><li>Independent Living<\/li><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><li>Skilled Nursing Care<\/li><\/ul>","item_city":"Charlotte","item_distance":7.233668,"item_email":"sales50610@Brookdaleliving.com","item_id":950,"item_lat":"35.133861","item_long":"-80.784639","item_name":"Carriage Club Of Charlotte","item_state":"NC","item_zip":"28226"},{"item_ALNumber":"","item_HomePage":"brookdale-place-south-charlotte.aspx","item_Image":"img_23093.jpg","item_MapName":"Brookdale Place of South Charlotte","item_Marker":"0","item_Phone":"877-712-9730","item_address":"5515 Rea Road","item_caretype":"<ul class='tags'><li>Independent Living<\/li><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Charlotte","item_distance":9.729482,"item_email":"sales23093@brookdaleliving.com","item_id":100017,"item_lat":"35.088706","item_long":"-80.810575","item_name":"Brookdale Place of South Charlotte","item_state":"NC","item_zip":"28226"},{"item_ALNumber":"","item_HomePage":"weddington-park.aspx","item_Image":"img_18510.jpg","item_MapName":"Weddington Park (Matthews)","item_Marker":"2","item_Phone":"877-713-2779","item_address":"2404 Plantation Center Dr.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Matthews","item_distance":11.609,"item_email":"sales18510@brookdaleliving.com","item_id":840,"item_lat":"35.085958","item_long":"-80.731342","item_name":"Weddington Park","item_state":"NC","item_zip":"28105"},{"item_ALNumber":"","item_HomePage":"abingdon-place-of-gastonia.aspx","item_Image":"img_18120.jpg","item_MapName":"Abingdon Place of Gastonia (Gastonia)","item_Marker":"2","item_Phone":"877-938-7004","item_address":"1680 S. New Hope Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Gastonia","item_distance":16.60696,"item_email":"sales18120@Brookdaleliving.com","item_id":863,"item_lat":"35.243997","item_long":"-81.136871","item_name":"Abingdon Place of Gastonia","item_state":"NC","item_zip":"28054"},{"item_ALNumber":"","item_HomePage":"concord-place.aspx","item_Image":"img_18310.jpg","item_MapName":"Concord Place","item_Marker":"2","item_Phone":"877-712-9822","item_address":"2452 Rock Hill Church Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Concord","item_distance":17.14298,"item_email":"sales18310@Brookdaleliving.com","item_id":882,"item_lat":"35.400745","item_long":"-80.625659","item_name":"Concord Place","item_state":"NC","item_zip":"28027"},{"item_ALNumber":"","item_HomePage":"gaston-place.aspx","item_Image":"img_18340.jpg","item_MapName":"Gaston Place (Gastonia)","item_Marker":"2","item_Phone":"877-938-7018","item_address":"1750 Robinwood Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Gastonia","item_distance":17.36544,"item_email":"sales18340@Brookdaleliving.com","item_id":834,"item_lat":"35.240246","item_long":"-81.150623","item_name":"Gaston Place","item_state":"NC","item_zip":"28054"},{"item_ALNumber":"","item_HomePage":"gaston-manor.aspx","item_Image":"img_18330.jpg","item_MapName":"Gaston Manor (Gastonia)","item_Marker":"2","item_Phone":"877-938-7016","item_address":"1717 Union Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Gastonia","item_distance":18.45294,"item_email":"sales18330@Brookdaleliving.com","item_id":851,"item_lat":"35.240346","item_long":"-81.169922","item_name":"Gaston Manor","item_state":"NC","item_zip":"28054"},{"item_ALNumber":" ","item_HomePage":"horizon-bay-concord.aspx","item_Image":"img_20305.jpg","item_MapName":"Horizon Bay","item_Marker":"2","item_Phone":"877-712-9883","item_address":"1501 Zion Church Rd E.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Concord","item_distance":19.1857,"item_email":"sales20305@brookdaleliving.com","item_id":5091,"item_lat":"35.369916","item_long":"-80.551075","item_name":"Horizon Bay Concord","item_state":"NC","item_zip":"28025"},{"item_ALNumber":"","item_HomePage":"union-park.aspx","item_Image":"img_18500.jpg","item_MapName":"Union Park (Monroe)","item_Marker":"2","item_Phone":"877-713-2768","item_address":"1316 Patterson St.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Monroe  ","item_distance":25.24957,"item_email":"sales18500@Brookdaleliving.com","item_id":848,"item_lat":"34.96876","item_long":"-80.526745","item_name":"Union Park","item_state":"NC","item_zip":"28112"},{"item_ALNumber":"","item_HomePage":"monroe-square.aspx","item_Image":"img_18420.jpg","item_MapName":"Monroe Square (Monroe)","item_Marker":"2","item_Phone":"877-712-9892","item_address":"918 Fitzgerald St.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Monroe  ","item_distance":25.25462,"item_email":"sales18420@Brookdaleliving.com","item_id":847,"item_lat":"34.972699","item_long":"-80.521885","item_name":"Monroe Square","item_state":"NC","item_zip":"28112"},{"item_ALNumber":"","item_HomePage":"clare-bridge-at-monroe-square.aspx","item_Image":"img_18430.jpg","item_MapName":"Clare Bridge at Monroe Square (Monroe)","item_Marker":"3","item_Phone":"877-712-9791","item_address":"919 Fitzgerald St","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Monroe","item_distance":25.25544,"item_email":"sales18420@Brookdaleliving.com","item_id":865,"item_lat":"34.972683","item_long":"-80.521889","item_name":"Clare Bridge at Monroe Square","item_state":"NC","item_zip":"28112"},{"item_ALNumber":"","item_HomePage":"salisbury-gardens.aspx","item_Image":"img_18450.jpg","item_MapName":"Salisbury Gardens (Salisbury)","item_Marker":"2","item_Phone":"877-938-7075","item_address":"2201 Statesville Blvd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Salisbury","item_distance":37.14544,"item_email":"sales18450@Brookdaleliving.com","item_id":864,"item_lat":"35.694631","item_long":"-80.516363","item_name":"Salisbury Gardens","item_state":"NC","item_zip":"28147"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-shelby.aspx","item_Image":"img_03350.jpg","item_MapName":"Sterling House of Shelby","item_Marker":"2","item_Phone":"877-713-1871","item_address":"1425 East Marion Street","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Shelby","item_distance":37.26841,"item_email":"sales03350@Brookdaleliving.com","item_id":645,"item_lat":"35.291652","item_long":"-81.499412","item_name":"Sterling House of Shelby","item_state":"NC","item_zip":"28150-4947"},{"item_ALNumber":"","item_HomePage":"statesville-manor.aspx","item_Image":"img_18470.jpg","item_MapName":"Statesville Manor (Statesville)","item_Marker":"2","item_Phone":"877-938-7747","item_address":"2441 East Broad Street","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Statesville ","item_distance":39.32716,"item_email":"sales18470@Brookdaleliving.com","item_id":828,"item_lat":"35.796654","item_long":"-80.837358","item_name":"Statesville Manor","item_state":"NC","item_zip":"28625"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-statesville-place.aspx","item_Image":"img_18490.jpg","item_MapName":"Clare Bridge of Statesville (Statesville)","item_Marker":"3","item_Phone":"877-938-7115","item_address":"2814 Peachtree Rd","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Statesville","item_distance":40.3479,"item_email":"sales18490@Brookdaleliving.com","item_id":867,"item_lat":"35.811411","item_long":"-80.834407","item_name":"Clare Bridge of Statesville Place","item_state":"NC","item_zip":"28625"},{"item_ALNumber":"","item_HomePage":"statesville-place.aspx","item_Image":"img_18480.jpg","item_MapName":"Statesville Place (Statesville)","item_Marker":"2","item_Phone":"877-938-8156","item_address":"2806 Peachtree Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Statesville","item_distance":40.35268,"item_email":"sales18480@Brookdaleliving.com","item_id":866,"item_lat":"35.811491","item_long":"-80.835023","item_name":"Statesville Place","item_state":"NC","item_zip":"28625"},{"item_ALNumber":"","item_HomePage":"hickory-manor.aspx","item_Image":"img_18370.jpg","item_MapName":"Hickory Manor (Hickory)","item_Marker":"2","item_Phone":"877-938-7121","item_address":"2530 16th St. NE","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Hickory","item_distance":45.0381,"item_email":"sales18370@Brookdaleliving.com","item_id":827,"item_lat":"35.759015","item_long":"-81.306843","item_name":"Hickory Manor","item_state":"NC","item_zip":"28601"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-hickory.aspx","item_Image":"img_03340.jpg","item_MapName":"Sterling House of Hickory","item_Marker":"2","item_Phone":"877-713-0966","item_address":"910 29th Avenue North East","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Hickory","item_distance":45.92822,"item_email":"sales03340@Brookdaleliving.com","item_id":642,"item_lat":"35.7704","item_long":"-81.314533","item_name":"Sterling House of Hickory","item_state":"NC","item_zip":"28601-1135"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-lexington.aspx","item_Image":"img_18250.jpg","item_MapName":"Carolina House of Lexington (Lexington)","item_Marker":"0","item_Phone":"877-938-6801","item_address":"161 Young Dr.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Lexington","item_distance":52.99032,"item_email":"sales18250@Brookdaleliving.com","item_id":832,"item_lat":"35.814008","item_long":"-80.235543","item_name":"Carolina House of Lexington","item_state":"NC","item_zip":"27292"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-forest-city.aspx","item_Image":"img_18220.jpg","item_MapName":"Carolina House of Forest City (Forest City)","item_Marker":"0","item_Phone":"877-938-7008","item_address":"493 Piney Ridge Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Forest City ","item_distance":59.43444,"item_email":"sales18220@Brookdaleliving.com","item_id":835,"item_lat":"35.323292","item_long":"-81.89093","item_name":"Carolina House of Forest City","item_state":"NC","item_zip":"28043"},{"item_ALNumber":"","item_HomePage":"lenoir-park.aspx","item_Image":"img_18410.jpg","item_MapName":"Lenoir Park (Lenoir)","item_Marker":"2","item_Phone":"877-938-7298","item_address":"1145 Powell Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Lenoir","item_distance":61.96324,"item_email":"sales18410@Brookdaleliving.com","item_id":829,"item_lat":"35.933361","item_long":"-81.523907","item_name":"Lenoir Park","item_state":"NC","item_zip":"28645"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-winston-salem.aspx","item_Image":"img_03060.jpg","item_MapName":"Clare Bridge of Winston-Salem","item_Marker":"3","item_Phone":"877-938-7119","item_address":"275 South Peace Haven Road","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Winston Salem","item_distance":64.70988,"item_email":"sales03060@Brookdaleliving.com","item_id":639,"item_lat":"36.07611","item_long":"-80.354677","item_name":"Clare Bridge of Winston-Salem","item_state":"NC","item_zip":"27104-4419"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-asheboro.aspx","item_Image":"img_18160.jpg","item_MapName":"Carolina House of Asheboro (Asheboro)","item_Marker":"0","item_Phone":"877-938-6798","item_address":"514 Vision Dr.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Asheboro","item_distance":67.35361,"item_email":"sales18160@Brookdaleliving.com","item_id":862,"item_lat":"35.734117","item_long":"-79.819696","item_name":"Carolina House of Asheboro","item_state":"NC","item_zip":"27203"},{"item_ALNumber":"","item_HomePage":"high-point-manor.aspx","item_Image":"img_18380.jpg","item_MapName":"High Point Manor (High Point)","item_Marker":"2","item_Phone":"877-938-6827","item_address":"201 W. Hartley Dr.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"High Point","item_distance":69.69592,"item_email":"sales18380@brookdaleliving.com","item_id":830,"item_lat":"35.991537","item_long":"-80.032279","item_name":"High Point Manor","item_state":"NC","item_zip":"27265"},{"item_ALNumber":"","item_HomePage":"reynolda-park.aspx","item_Image":"img_18440.jpg","item_MapName":"Reynolda Park (Winston-Salem)","item_Marker":"2","item_Phone":"855-308-9457","item_address":"2980 Reynolda Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Winston-Salem","item_distance":70.31545,"item_email":"sales18440@Brookdaleliving.com","item_id":854,"item_lat":"36.146303","item_long":"-80.303378","item_name":"Reynolda Park","item_state":"NC","item_zip":"27106"},{"item_ALNumber":"","item_HomePage":"clare-bridge-at-high-point-place.aspx","item_Image":"img_18400.jpg","item_MapName":"Clare Bridge at High Point Place","item_Marker":"3","item_Phone":"877-938-6807","item_address":"1564 Skeet Club Rd","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"High Point","item_distance":74.061,"item_email":"sales18400@Brookdaleliving.com","item_id":879,"item_lat":"36.030776","item_long":"-79.969106","item_name":"Clare Bridge at High Point Place","item_state":"NC","item_zip":"27265"},{"item_ALNumber":"","item_HomePage":"high-point-place.aspx","item_Image":"img_18390.jpg","item_MapName":"High Point Place","item_Marker":"2","item_Phone":"877-938-6843","item_address":"1568 Skeet Club Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"High Point","item_distance":74.08096,"item_email":"sales18390@Brookdaleliving.com","item_id":880,"item_lat":"36.033743","item_long":"-79.972703","item_name":"High Point Place","item_state":"NC","item_zip":"27265"},{"item_ALNumber":"","item_HomePage":"skeet-club-manor.aspx","item_Image":"img_18460.jpg","item_MapName":"Skeet Club Manor (High Point)","item_Marker":"2","item_Phone":"877-938-6850","item_address":"1560 Skeet Club Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"High Point","item_distance":74.08727,"item_email":"sales18460@Brookdaleliving.com","item_id":860,"item_lat":"36.034473","item_long":"-79.973548","item_name":"Skeet Club Manor","item_state":"NC","item_zip":"27265"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-pinehurst.aspx","item_Image":"img_18270.jpg","item_MapName":"Carolina House of Pinehurst (Pinehurst)","item_Marker":"0","item_Phone":"877-938-7113","item_address":"17 Regional Dr","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Pinehurst","item_distance":78.31866,"item_email":"sales18270@Brookdaleliving.com","item_id":838,"item_lat":"35.209343","item_long":"-79.454836","item_name":"Carolina House of Pinehurst","item_state":"NC","item_zip":"28374"},{"item_ALNumber":"","item_HomePage":"greensboro-manor.aspx","item_Image":"img_18350.jpg","item_MapName":"Greensboro Manor (Greensboro)","item_Marker":"2","item_Phone":"877-938-7071","item_address":"5809 Old Oak Ridge Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Greensboro","item_distance":80.48102,"item_email":"sales18350@Brookdaleliving.com","item_id":859,"item_lat":"36.104083","item_long":"-79.897995","item_name":"Greensboro Manor","item_state":"NC","item_zip":"27410"},{"item_ALNumber":"","item_HomePage":"greensboro-place.aspx","item_Image":"img_18360.jpg","item_MapName":"Greensboro Place (Greensboro)","item_Marker":"0","item_Phone":"877-938-7073","item_address":"4400 Lawndale Dr","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Greensboro","item_distance":84.3754,"item_email":"sales18360@Brookdaleliving.com","item_id":826,"item_lat":"36.132192","item_long":"-79.832288","item_name":"Greensboro Place","item_state":"NC","item_zip":"27455"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-burlington-manor.aspx","item_Image":"img_18150.jpg","item_MapName":"Clare Bridge of Burlington Manor (Burlington)","item_Marker":"3","item_Phone":"877-938-6805","item_address":"3619 South Mebane St","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Burlington","item_distance":96.28599,"item_email":"sales18150@Brookdaleliving.com","item_id":869,"item_lat":"36.076343","item_long":"-79.481832","item_name":"Clare Bridge of Burlington Manor","item_state":"NC","item_zip":"27215"},{"item_ALNumber":"","item_HomePage":"burlington-manor.aspx","item_Image":"img_18140.jpg","item_MapName":"Burlington Manor (Burlington)","item_Marker":"2","item_Phone":"877-938-6795","item_address":"3615 South Mebane St","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Burlington","item_distance":96.28625,"item_email":"sales18140@Brookdaleliving.com","item_id":868,"item_lat":"36.076306","item_long":"-79.481787","item_name":"Burlington Manor","item_state":"NC","item_zip":"27215"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-asheville.aspx","item_Image":"img_03210.jpg","item_MapName":"Clare Bridge of Asheville","item_Marker":"3","item_Phone":"877-938-8655","item_address":"4 Walden Ridge Drive","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Asheville","item_distance":96.32214,"item_email":"sales03210@Brookdaleliving.com","item_id":635,"item_lat":"35.4978","item_long":"-82.52129","item_name":"Clare Bridge of Asheville","item_state":"NC","item_zip":"28803-8583"},{"item_ALNumber":"","item_HomePage":"asheville-manor.aspx","item_Image":"img_18130.jpg","item_MapName":"Asheville Manor (Asheville)","item_Marker":"2","item_Phone":"877-938-7079","item_address":"308 Overlook Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Asheville","item_distance":97.11143,"item_email":"sales18130@Brookdaleliving.com","item_id":831,"item_lat":"35.485805","item_long":"-82.538275","item_name":"Asheville Manor","item_state":"NC","item_zip":"28803"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-reidsville.aspx","item_Image":"img_18280.jpg","item_MapName":"Carolina House of Reidsville (Reidsville)","item_Marker":"0","item_Phone":"877-938-6803","item_address":"2931 Vance Street","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Reidsville","item_distance":101.2543,"item_email":"sales18280@Brookdaleliving.com","item_id":843,"item_lat":"36.353618","item_long":"-79.685602","item_name":"Carolina House of Reidsville","item_state":"NC","item_zip":"27320"},{"item_ALNumber":"","item_HomePage":"eden-estates.aspx","item_Image":"img_18320.jpg","item_MapName":"Eden Estates (Eden)","item_Marker":"2","item_Phone":"877-938-6821","item_address":"314 W. Kings Hwy","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Eden","item_distance":106.6425,"item_email":"sales18320@Brookdaleliving.com","item_id":850,"item_lat":"36.491764","item_long":"-79.749038","item_name":"Eden Estates","item_state":"NC","item_zip":"27288"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-chapel-hill.aspx","item_Image":"img_18190.jpg","item_MapName":"Carolina House of Chapel Hill (Chapel Hill)","item_Marker":"0","item_Phone":"877-712-9733","item_address":"100 Lanark Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Chapel Hill","item_distance":112.4791,"item_email":"sales18190@Brookdaleliving.com","item_id":849,"item_lat":"35.910976","item_long":"-79.025351","item_name":"Carolina House of Chapel Hill","item_state":"NC","item_zip":"27517"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-chapel-hill.aspx","item_Image":"img_03240.jpg","item_MapName":"Clare Bridge of Chapel Hill","item_Marker":"3","item_Phone":"877-712-9775","item_address":"2230 Farmington Drive","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Chapel Hill","item_distance":114.4833,"item_email":"sales03240@Brookdaleliving.com","item_id":637,"item_lat":"35.90838","item_long":"-78.984691","item_name":"Clare Bridge of Chapel Hill","item_state":"NC","item_zip":"27517-7843"},{"item_ALNumber":"","item_HomePage":"wynwood-of-chapel-hill.aspx","item_Image":"img_03010.jpg","item_MapName":"Wynwood of Chapel Hill","item_Marker":"2","item_Phone":"877-713-2893","item_address":"2220 Farmington Drive","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Chapel Hill","item_distance":114.4942,"item_email":"sales03010@brookdaleliving.com","item_id":646,"item_lat":"35.908405","item_long":"-78.98449","item_name":"Wynwood of Chapel Hill","item_state":"NC","item_zip":"27517-7843"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-cary.aspx","item_Image":"img_18180.jpg","item_MapName":"Carolina House of Cary (Cary)","item_Marker":"0","item_Phone":"877-712-9732","item_address":"111 MacArthur Dr.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Cary","item_distance":118.9745,"item_email":"sales18180@Brookdaleliving.com","item_id":833,"item_lat":"35.773289","item_long":"-78.835634","item_name":"Carolina House of Cary","item_state":"NC","item_zip":"27513"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-durham.aspx","item_Image":"img_18200.jpg","item_MapName":"Carolina House of Durham (Durham)","item_Marker":"0","item_Phone":"877-712-9734","item_address":"4434 Ben Franklin Blvd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Durham","item_distance":123.2714,"item_email":"sales18200@Brookdaleliving.com","item_id":836,"item_lat":"36.047672","item_long":"-78.892045","item_name":"Carolina House of Durham","item_state":"NC","item_zip":"27704"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-cary.aspx","item_Image":"img_03030.jpg","item_MapName":"Clare Bridge of Cary","item_Marker":"3","item_Phone":"877-712-9773","item_address":"7870 Chapel Hill Road","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Cary","item_distance":123.3389,"item_email":"03030@assisted.com","item_id":636,"item_lat":"35.795407","item_long":"-78.762561","item_name":"Clare Bridge of Cary","item_state":"NC","item_zip":"27513-5428"},{"item_ALNumber":" ","item_HomePage":"the-heritage-of-raleigh.aspx","item_Image":"img_02003.jpg","item_MapName":"The Heritage of Raleigh","item_Marker":"1","item_Phone":"877-712-9876","item_address":"1200 Carlos Drive","item_caretype":"<ul class='tags'><li>Independent Living<\/li><\/ul>","item_city":"Raleigh ","item_distance":132.4091,"item_email":"sales02003@Brookdaleliving.com","item_id":141,"item_lat":"35.864351","item_long":"-78.620061","item_name":"The Heritage of Raleigh","item_state":"NC","item_zip":"27609"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-wake-forest.aspx","item_Image":"img_18300.jpg","item_MapName":"Carolina House of Wake Forest (Wake Forest)","item_Marker":"0","item_Phone":"877-712-9735","item_address":"611 S. Brooks St","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Wake Forest","item_distance":141.096,"item_email":"sales18300@Brookdaleliving.com","item_id":855,"item_lat":"35.981762","item_long":"-78.507305","item_name":"Carolina House of Wake Forest","item_state":"NC","item_zip":"27587"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-smithfield.aspx","item_Image":"img_18290.jpg","item_MapName":"Carolina House of Smithfield (Smithfield)","item_Marker":"0","item_Phone":"877-938-7012","item_address":"830 Berkshire Rd","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Smithfield","item_distance":142.9768,"item_email":"sales18290@Brookdaleliving.com","item_id":856,"item_lat":"35.517368","item_long":"-78.328573","item_name":"Carolina House of Smithfield","item_state":"NC","item_zip":"27577"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-goldsboro.aspx","item_Image":"img_03310.jpg","item_MapName":"Sterling House of Goldsboro","item_Marker":"2","item_Phone":"877-713-0955","item_address":"1800 N. Berkeley Boulevard","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Goldsboro","item_distance":164.9665,"item_email":"sales03310@Brookdaleliving.com","item_id":640,"item_lat":"35.387488","item_long":"-77.921842","item_name":"Sterling House of Goldsboro","item_state":"NC","item_zip":"27534-3368"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-rocky-mount.aspx","item_Image":"img_03280.jpg","item_MapName":"Sterling House of Rocky Mount","item_Marker":"2","item_Phone":"877-713-1866","item_address":"650 Goldrock Road","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Rocky Mount","item_distance":178.1265,"item_email":"sales03280@Brookdaleliving.com","item_id":644,"item_lat":"35.981339","item_long":"-77.808554","item_name":"Sterling House of Rocky Mount","item_state":"NC","item_zip":"27804-8804"},{"item_ALNumber":"","item_HomePage":"clare-bridge-of-wilmington.aspx","item_Image":"img_03080.jpg","item_MapName":"Clare Bridge of Wilmington","item_Marker":"3","item_Phone":"877-938-8659","item_address":"3501 Converse Drive","item_caretype":"<ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Wilmington","item_distance":181.0345,"item_email":"sales03080@Brookdaleliving.com","item_id":638,"item_lat":"34.198908","item_long":"-77.908708","item_name":"Clare Bridge of Wilmington","item_state":"NC","item_zip":"28403-6179"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-greenville.aspx","item_Image":"img_18230.jpg","item_MapName":"Carolina House of Greenville (Greenville) ","item_Marker":"0","item_Phone":"877-938-7010","item_address":"2715 Dickinson Ave","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Greenville","item_distance":192.8356,"item_email":"sales18230@Brookdaleliving.com","item_id":837,"item_lat":"35.572307","item_long":"-77.442912","item_name":"Carolina House of Greenville","item_state":"NC","item_zip":"27834"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-greenville-nc.aspx","item_Image":"img_03320.jpg","item_MapName":"Sterling House of Greenville (NC)","item_Marker":"2","item_Phone":"877-713-0959","item_address":"2105 West Arlington Boulevard","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"Greenville","item_distance":194.8481,"item_email":"sales03320@Brookdaleliving.com","item_id":641,"item_lat":"35.60602","item_long":"-77.411505","item_name":"Sterling House of Greenville (NC)","item_state":"NC","item_zip":"27834-5744"},{"item_ALNumber":"","item_HomePage":"sterling-house-of-new-bern.aspx","item_Image":"img_03290.jpg","item_MapName":"Sterling House of New Bern","item_Marker":"2","item_Phone":"877-713-1029","item_address":"1336 South Glenburnie Road","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul>","item_city":"New Bern","item_distance":211.9863,"item_email":"sales03290@Brookdaleliving.com","item_id":643,"item_lat":"35.121149","item_long":"-77.089041","item_name":"Sterling House of New Bern","item_state":"NC","item_zip":"28562-2624"},{"item_ALNumber":"","item_HomePage":"carolina-house-of-morehead-city.aspx","item_Image":"img_18260.jpg","item_MapName":"Carolina House of Morehead City (Morehead City)","item_Marker":"0","item_Phone":"877-938-7107","item_address":"107 Bryan St.","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Morehead City","item_distance":231.2057,"item_email":"sales18260@Brookdaleliving.com","item_id":858,"item_lat":"34.7345","item_long":"-76.800328","item_name":"Carolina House of Morehead City","item_state":"NC","item_zip":"28557"},{"item_ALNumber":"","item_HomePage":"carolina-house-elizabeth-city.aspx","item_Image":"img_18210.jpg","item_MapName":"Carolina House Elizabeth City (Elizabeth City)","item_Marker":"0","item_Phone":"877-938-7006","item_address":"401 Hastings LN","item_caretype":"<ul class='tags'><li>Assisted Living<\/li><\/ul><ul class='tags'><li>Alzheimer's Care<\/li><\/ul>","item_city":"Elizabeth City","item_distance":269.4767,"item_email":"sales18210@Brookdaleliving.com","item_id":861,"item_lat":"36.330132","item_long":"-76.227858","item_name":"Carolina House Elizabeth City","item_state":"NC","item_zip":"27909"}];
+                                // try {
+                                    pageMax = data.length / icount
+                                    pageMax = Math.ceil(pageMax)
+                                    $(".maxNum").html(pageMax)
+
+                                    var centerSet = false;
+                                    var zoomSet = false;
+
+                                    $.each(data, function (key, val) {
+                                        if (key >= Number(pcount * icount) - icount && key < Number(pcount * icount)) {
+                                            listcount = listcount + 1;
+                                            console.log(val);
+                                            var place = val;
+                                            var image = 'http://www.brookdaleliving.com/pins/pin' + listcount + '.png';
+                                            if ( !centerSet && pcount > 1) { centerSet = true
+                                                newcenter = new google.maps.LatLng(place.item_lat, place.item_long);
+                                              }
+                                            if (typeof newzoom == "undefined"|| !zoomSet ) { zoomSet = true
+                                                if (place.item_distance < 40) {
+                                                    newzoom = 8;
+                                                }
+                                                else if (place.item_distance < 75) {
+                                                    newzoom = 7;
+                                                }
+                                                else if (place.item_distance < 100) {
+                                                    newzoom = 6;
+                                                }
+                                                else if (place.item_distance < 200) {
+                                                    newzoom = 5;
+                                                }
+                                                else if (place.item_distance < 300) {
+                                                    newzoom = 5;
+                                                }
+                                                else {
+                                                    newzoom = 4;
+                                                }
+                                            }
+                                            var marker = new google.maps.Marker({ // Marker Options  -- https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions
+                                                position: new google.maps.LatLng(place.item_lat, place.item_long),
+                                                title: place.item_name,
+                                                icon: image,
+                                                html: buildContent(val)
+                                            });
+                                            console.log(place.item_lat);
+                                            mymapdata = mymapdata + "<br>" + buildListContent(val, listcount);
+                                            google.maps.event.addListener(marker, 'click', function () {
+                                                var $this = this;
+
+                                                // Create new info box
+                                                var infowindow = new google.maps.InfoWindow({
+                                                    content: $this.html
+                                                });
+
+                                                // Clear out any existing open infoboxes
+                                                try {
+                                                    openInfoWindow.close();
+                                                } catch (err) {
+                                                    // Do Nothing...
+                                                }
+
+                                                infowindow.setContent($this.html);
+                                                infowindow.open(gmap, $this);
+                                                openInfoWindow = infowindow;
+                                            });
+
+                                            marker.setMap(gmap);
+                                        }
+                                    });
+
+
+                                    if (listcount == 0) {
+                                        alert("Sorry, we were unable to find any communities within " + rad + " miles of  " + address + "\nPlease try searching again.");
+                                        // window.location = "./find-a-community.aspx";
+                                    };
+
+                                }
+                                catch (err) {
+                                    alert(err + "Sorry, we were unable to find that address.\nPlease try searching again.");
+                                    // window.location = "./find-a-community.aspx";
+                                }
+
+
+                                gmap.setZoom(newzoom);
+                                gmap.setCenter(newcenter);
+                                // done above now can delete gmap.setCenter(newcenter);
+                                // End JSON Retrival 
+
+                                // $("#mapdata").empty()
+                                // var mapdatahtml = document.getElementById('mapdata');
+                                // mapdatahtml.innerHTML = mymapdata;
+                                console.log(mymapdata);
+                            // popUpJw ()
+                            // });
+                        // }
+                        // catch (err) {
+                        //     alert("Sorry, we were unable to find that address.\nPlease try searching again.");
+                        //     //  window.location = "./find-a-community.aspx";
+                        // }
+
+
+                    }
+                    else {
+                        alert("Sorry, we were unable to find that address.\nPlease try searching again.");
+                        // window.location = "./find-a-community.aspx";
+                    }
+
+
+                });
+
+                    function buildContent(val) {
+                        // Build Content for infoboxes
+                        htmlStr = "<strong>";
+                        htmlStr += val.item_name;
+                        htmlStr += "</strong><br/>";
+                        htmlStr += val.item_address;
+                        htmlStr += "<br/>";
+                        htmlStr += val.item_city;
+                        htmlStr += ", ";
+                        htmlStr += val.item_state;
+                        htmlStr += " ";
+                        htmlStr += val.item_zip;
+                        htmlStr += "<br/>";
+                        htmlStr += val.item_Phone;
+                        htmlStr += "<br/>";
+                        htmlStr += "<em><strong>Care Type(s):</strong> ";
+                        htmlStr += val.item_caretype;
+                        htmlStr += "</em>";
+                        htmlStr += "<br/><a href='./" + val.item_HomePage + "'><strong>Learn More</strong></a>";
+
+                        return htmlStr;
+                    }
+
+
+
+
+
+
+                    function buildListContent(val, placeno) {
+                        // Build Content for infoboxes
+                        // console.log(val)
+                        htmlStr = "<li class='propertyList'>"
+                        htmlStr += "<h2><span>";
+                        htmlStr += placeno;
+                        htmlStr += "</span>";
+                        htmlStr += "<a href='";
+                        htmlStr += val.item_HomePage;
+                        htmlStr += "'>"
+                        htmlStr += val.item_name;
+                        htmlStr += "</a>";
+                        htmlStr += "</h2>";
+                        htmlStr += "<div class='section'>";
+                        htmlStr += "<div class='section-holder'>";
+                        htmlStr += "<div class='img-holder'>";
+                        htmlStr += "<img src='apps/p/";
+                        htmlStr += val.item_Image;
+                        htmlStr += "' width='156' height='96' alt='image description'/>";
+                        htmlStr += "</div>";
+                        htmlStr += "<a class='btn01' href='";
+                        htmlStr += val.item_HomePage;
+                        htmlStr +="'><span>View full details</span></a>";
+                        htmlStr += "</div>";
+                        htmlStr += "<div class='section-frame'><div class='section-row'>";
+                        // htmlStr += "<div class='section-col'>";
+                        // htmlStr += "<h3>Amenities:</h3>";
+                        // htmlStr += "<ul class='tags'>";
+                        // htmlStr += "<li><a href='#'>Full-service private dining room</a></li>";
+                        // htmlStr += "<li><a href='#'>On-site wellness center</a></li>";
+                        // htmlStr += "<li><a href='#'>Beauty/barber shop &amp; corner...</a></li>";
+                        // htmlStr += "</ul></div>";
+                        htmlStr += "<adress>";
+                        htmlStr += "<strong>";
+                        htmlStr += val.item_address;
+                        htmlStr += "</strong><br/><span>";
+                        htmlStr += val.item_city;
+                        htmlStr += ", ";
+                        htmlStr += val.item_state;
+                        htmlStr += " ";
+                        htmlStr += val.item_zip;
+                        htmlStr += "<br/>";
+                        htmlStr += val.item_Phone;
+                        htmlStr += "</span><br/>";
+                        htmlStr += "<!--<a href='#'>Request Info >></a>--></address></div> ";
+                        htmlStr += "<div class='section-row'>";
+                        htmlStr += "<h3>Available Care Types  <a href='#' class='topopup'><img id='popBtn1' src='images/questionMark.png' alt='care level information'/></a></h3>";
+                        htmlStr += "<div class='tags-holder'>";
+                        htmlStr += val.item_caretype;
+
+                        htmlStr += "</div></div></div></div></li>"
+
+
+                        return htmlStr;
+                    }
+                }
+                getmap();
+            });
+
+
         </script>
     </head>
     <body>
@@ -301,7 +540,7 @@
                     </form>
                     <img src="http://www.formstack.com/forms/count.php?1564593" alt="Form View Counter" width="1" height="1" border="0" />
                     <div class="sponsors"></div>
-                    <div id="googleMap" style="width:290px;height:328px;margin-top:50px;"></div>
+                    <div id="mapCanvas" style="width:290px;height:328px;margin-top:50px;"></div>
                 </div>
                 <div class="clear"></div>
 
